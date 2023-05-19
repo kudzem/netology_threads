@@ -1,15 +1,17 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <atomic>
 
 using namespace std::chrono_literals;
 
-unsigned queue_size = 0;
+std::atomic<unsigned> queue_size = 0;
 
 void produce(unsigned number_of_clients) {
     while (number_of_clients--) {
-        ++queue_size;
-        std::cout << "Queue increased to " << queue_size << std::endl;
+        //++queue_size;
+        queue_size.fetch_add(1, std::memory_order_relaxed);
+        std::cout << "Queue increased to " << queue_size.load(std::memory_order_relaxed) << std::endl;
         std::this_thread::sleep_for(1s);
     };
 
@@ -18,9 +20,10 @@ void produce(unsigned number_of_clients) {
 
 void serve() {
     std::this_thread::sleep_for(2s);
-    while (queue_size) {
+    while (queue_size.load(std::memory_order_relaxed)) {
         --queue_size;
-        std::cout << "Queue decreased to " << queue_size << std::endl;
+        queue_size.fetch_sub(1, std::memory_order_relaxed);
+        std::cout << "Queue decreased to " << queue_size.load(std::memory_order_relaxed) << std::endl;
         std::this_thread::sleep_for(2s);
      };
 
