@@ -37,11 +37,9 @@ void print_lock_info(unsigned lock_id) {
 }
 
 void my_data_swap2(Data& first, Data& second) {
-    print_lock_info(1);
     std::unique_lock<std::mutex> lk1(first.m, std::defer_lock);
-    print_lock_info(2);
     std::unique_lock<std::mutex> lk2(second.m, std::defer_lock);
-    std::lock(first.m, second.m);
+    std::lock(lk1, lk2);
     std::swap(first.data, second.data);
 };
 
