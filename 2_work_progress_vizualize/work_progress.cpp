@@ -74,13 +74,20 @@ std::string get_progress_bar(unsigned progress, unsigned limit) {
 
 int main()
 {
-    const unsigned number_of_tasks = 5;
+    std::cout << "How many tasks you need to do? ";
+    unsigned number_of_tasks;
+    std::cin >> number_of_tasks;
+
+    std::cout << "What's the task complexity? ";
+    unsigned common_task_complexity;
+    std::cin >> common_task_complexity;
 
     std::srand(std::time(nullptr));
     std::vector<Task> tasks;
     for (int i = 0; i < number_of_tasks; ++i) 
     {
-        unsigned task_complexity = std::rand() % (max_task_complexity + 1);
+        //unsigned task_complexity = std::rand() % (max_task_complexity + 1);
+        unsigned task_complexity = common_task_complexity;
         task_complexity = std::max(task_complexity, min_task_complexity);
         tasks.emplace_back(i, task_complexity);
     }
