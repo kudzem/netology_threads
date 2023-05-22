@@ -11,19 +11,23 @@
 
 
 template<class It, class Function>
-Function own_for_each_parallel(It first, It last, Function f)
+//Function own_for_each_parallel(It first, It last, Function f)
+void own_for_each_parallel(It first, It last, Function f)
 {
     size_t size = std::distance(first, last);
     if (std::distance(first, last) < 3) {
-        return std::for_each(first, last, f);
+        //return std::for_each(first, last, f);
+        std::for_each(first, last, f);
+        return;
     }
 
     It mid = first + size/2;
-    std::future<Function> res = std::async(std::launch::async, &own_for_each_parallel<It, Function>, first, mid, f);
+    //std::future<Function> res = std::async(std::launch::async, &own_for_each_parallel<It, Function>, first, mid, f);
+    std::async(std::launch::async, &own_for_each_parallel<It, Function>, first, mid, f);
     own_for_each_parallel(mid, last, f);
-    res.get();
+    //res.get();
 
-    return f;
+    return;
 }
 
 int main()
@@ -31,6 +35,7 @@ int main()
     std::vector<int> v{ 1,2,3,4,5,6,7,8,9,10 };
     own_for_each_parallel(v.begin(), v.end(), [](int& value) { value *= value; });
 
-    for_each(v.begin(), v.end(), [](int& value) { std::cout << value << " "; });
+    own_for_each_parallel(v.begin(), v.end(), [](int& value) { std::cout << value << " "; });
+
     return 0;
 }
