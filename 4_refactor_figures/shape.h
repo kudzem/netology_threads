@@ -1,29 +1,74 @@
 #pragma once
 #include<string>
+#include<array>
+
+struct ThreeDPoint {
+	int _x, _y, _z;
+public:
+	ThreeDPoint(int x, int y, int z) : _x(x), _y(y), _z(z) {}
+	ThreeDPoint(const ThreeDPoint& other) : _x(other._x), _y(other._y), _z(other._z) {}
+	ThreeDPoint() : _x(0), _y(0), _z(0) {}
+};
+
+template <int N>
 class Shape
 {
+	std::array<ThreeDPoint, N> points;
 public:
-	static const int line = 0;
-	static const int sqr = 1;
-	static const int cube = 2;
-	static const int circle = 3;
-	static const int cylinder = 4;
-	Shape() = default;
-	Shape(int type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3, int _x4, int _y4, int _z4, int _x5, int _y5, int _z5, int _x6, int _y6, int _z6, int _x7, int _y7, int _z7, int _x8, int _y8, int _z8);
-	Shape(int type, int _x1, int _y1, double R, double H);
-	int getType() { return type; }
+	template <typename BeginPointIt>
+	Shape(BeginPointIt start) {
+		for (auto& point : points) {
+			point = *start++;
+		}
+	}
+};
 
-	int type;
-	int x1 = 0, y1 = 0, z1 = 0,
-		x2 = 0, y2 = 0, z2 = 0,
-		x3 = 0, y3 = 0, z3 = 0,
-		x4 = 0, y4 = 0, z4 = 0,
-		x5 = 0, y5 = 0, z5 = 0,
-		x6 = 0, y6 = 0, z6 = 0,
-		x7 = 0, y7 = 0, z7 = 0,
-		x8 = 0, y8 = 0, z8 = 0;
-	double volume;
-	double square;
-	double height;
-	double radius;
+class Flat {
+private:
+	double square = 0;
+public:
+	Flat() {}
+};
+
+class Volume {
+	double volume = 0;
+public:
+	Volume() {}
+};
+
+class Line : public Flat, public Shape<2> {
+public:
+	template <typename BeginPointIt>
+	Line(BeginPointIt start) : Shape(start) {}
+};
+
+class Square : Flat, public Shape<4> {
+public:
+	template <typename BeginPointIt>
+	Square(BeginPointIt start) : Shape(start) {}
+};
+
+class RotationShape : public Shape<1> {
+private:
+	double radius = 0;
+public:
+	RotationShape(const ThreeDPoint& center, int radius) : Shape(center), radius(radius) {}
+};
+
+class Circle : public Flat, public RotationShape {
+public:
+	Circle(const ThreeDPoint& center, int radius) : RotationShape(center, radius), Flat() {}
+};
+
+class Cube : public Volume, public Shape<8> {
+public:
+	template <typename BeginPointIt>
+	Cube(BeginPointIt start) : Shape(start) {}
+};
+
+class Cylinder : public RotationShape, public Volume {
+private:
+	double height = 0;
+public:
+	Cylinder(const ThreeDPoint& center, int radius, int height) : RotationShape(center, radius), Volume(), height(height) {}
 };
