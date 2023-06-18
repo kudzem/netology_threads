@@ -38,19 +38,12 @@ Shape::Shape(int _type, ThreeDPoint center) : Shape()
 	points.push_back(center);
 }
 
-double Shape::getVolume() const { return 0; }
-double Shape::getSquare() const { return 0; }
-
 double Cylinder::getVolume() const {
 	return M_PI * getRadius() * getRadius() * height;
 }
 
 double Cylinder::getSquare() const {
 	return (2 * M_PI * getRadius() * getRadius()) + (2 * M_PI * getRadius() * height);
-}
-
-double Circle::getVolume() const {
-	return 0;
 }
 
 double Circle::getSquare() const {

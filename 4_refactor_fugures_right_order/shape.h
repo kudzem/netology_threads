@@ -82,8 +82,6 @@ public:
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + getTypeStr() + "(" + std::to_string(getType()) + ")" + ":\n";
-		res += "volume=" + std::to_string(getVolume()) + ":\n";
-		res += "square=" + std::to_string(getSquare()) + ":\n";
 		if (type == sqr) {
 			double a = points[0].distance(points[1]);
 			double b = points[0].distance(points[2]);
@@ -125,10 +123,6 @@ public:
 
 		return *this;
 	}
-
-	virtual double getVolume() const;
-	virtual double getSquare() const;
-
 };
 
 class HasSurface {
@@ -192,7 +186,7 @@ public:
 	}
 
 	std::string to_string() override {
-		std::string res = Shape::to_string();
+		std::string res = RotationShape::to_string();
 		res += "height=" + std::to_string(height) + ":\n";
 		return res;
 	}
@@ -212,7 +206,6 @@ public:
 
 	std::string getTypeStr() const override { return "Circle"; }
 
-	double getVolume() const override;
 	double getSquare() const override;
 };
 
@@ -234,4 +227,11 @@ public:
 
 	virtual double getSquare() const override;
 	virtual double getVolume() const override;
+};
+
+class Line : public Shape {
+public:
+	Line(ThreeDPoint p1, ThreeDPoint p2) : Shape(Shape::line, p1, p2) {}
+
+	virtual std::string getTypeStr() const override { return "Line"; }
 };
