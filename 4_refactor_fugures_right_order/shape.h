@@ -11,7 +11,11 @@ public:
 	Shape() = default;
 	Shape(int type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3, int _x4, int _y4, int _z4, int _x5, int _y5, int _z5, int _x6, int _y6, int _z6, int _x7, int _y7, int _z7, int _x8, int _y8, int _z8);
 	Shape(int type, int _x1, int _y1, double R, double H);
-	int getType() { return type; }
+	int getType() const { return type; }
+	double getVolume() const { return type; }
+	double getSquare() const { return square; }
+	double getHeight() const { return height; }
+	double getRadius() const { return radius; }
 
 	int type;
 	int x1 = 0, y1 = 0, z1 = 0,
@@ -26,4 +30,23 @@ public:
 	double square;
 	double height;
 	double radius;
+
+	std::string to_string() {
+		std::string res;
+		res += "Type=" + std::to_string(getType()) + ":\n";
+		res += "volume=" + std::to_string(volume) + ":\n";
+		res += "square=" + std::to_string(square) + ":\n";
+		res += "height=" + std::to_string(height) + ":\n";
+		res += "radius=" + std::to_string(radius) + ":\n";
+		res += std::to_string(x1) + "," + std::to_string(y1) + "," + std::to_string(z1) + "\n";
+		res += std::to_string(x2) + "," + std::to_string(y2) + "," + std::to_string(z2) + "\n";
+		res += std::to_string(x3) + "," + std::to_string(y3) + "," + std::to_string(z3) + "\n";
+		res += std::to_string(x4) + "," + std::to_string(y4) + "," + std::to_string(z4) + "\n";
+		res += std::to_string(x5) + "," + std::to_string(y5) + "," + std::to_string(z5) + "\n";
+		res += std::to_string(x6) + "," + std::to_string(y6) + "," + std::to_string(z6) + "\n";
+		res += std::to_string(x7) + "," + std::to_string(y7) + "," + std::to_string(z7) + "\n";
+		res += std::to_string(x8) + "," + std::to_string(y8) + "," + std::to_string(z8) + "\n";
+
+		return res;
+	}
 };

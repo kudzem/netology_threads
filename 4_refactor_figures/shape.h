@@ -97,24 +97,25 @@ public:
 	virtual std::string get_type() const { return "Arbitrary"; }
 };
 
-class Flat {
-private:
+class HasSurface {
+protected:
 	double square = 0;
 public:
-	Flat() {}
+	HasSurface() {}
 
-	double get_square() const { return square; }
+	virtual double get_square() = 0;
 };
 
-class Volume {
+class HasVolume {
+protected:
 	double volume = 0;
 public:
-	Volume() {}
+	HasVolume() {}
 
-	double get_volume() const { return volume; }
+	virtual double get_volume() = 0;
 };
 
-class Line : public Flat, public Shape {
+class Line : public Shape {
 public:
 	template <typename BeginPointIt>
 	Line(BeginPointIt start) : Shape(start, 2) {}
@@ -122,12 +123,14 @@ public:
 	virtual std::string get_type() const override { return "Line"; }
 };
 
-class Square : Flat, public Shape {
+class Square : HasSurface, public Shape {
 public:
 	template <typename BeginPointIt>
 	Square(BeginPointIt* start) : Shape(start, 4) {}
 
 	virtual std::string get_type() const override { return "Square"; }
+
+	virtual double get_square() override { return square; }
 };
 
 class RotationShape : public Shape {
@@ -156,25 +159,31 @@ public:
 
 };
 
-class Circle : public Flat, public RotationShape {
+class Circle : public HasSurface, public RotationShape {
 public:
-	Circle(const ThreeDPoint* center, int radius) : RotationShape(center, radius), Flat() {}
+	Circle(const ThreeDPoint* center, int radius) : RotationShape(center, radius), HasSurface() {}
+
+	virtual double get_square() override { return square; }
 
 	virtual std::string get_type() const override { return "Circle"; }
 };
 
-class Cube : public Volume, public Shape {
+class Cube : public HasVolume, public HasSurface, public Shape {
 public:
 	Cube(const ThreeDPoint* points) : Shape(points, 8) {}
 
 	virtual std::string get_type() const override { return "Cube"; }
+
+	virtual double get_square() override { return square; }
+
+	virtual double get_volume() override { return volume; }
 };
 
-class Cylinder : public RotationShape, public Volume {
+class Cylinder : public RotationShape, public HasVolume, public HasSurface {
 private:
 	double height = 0;
 public:
-	Cylinder(const ThreeDPoint* center, int radius, int height) : RotationShape(center, radius), Volume(), height(height) {}
+	Cylinder(const ThreeDPoint* center, int radius, int height) : RotationShape(center, radius), HasVolume(), height(height) {}
 
 	virtual Shape& scale(int factor) override {
 		RotationShape::scale(factor);
@@ -193,6 +202,9 @@ public:
 		res += "Height: " + std::to_string(height) + "\n";
 		return res;
 	}
+
+	virtual double get_square() override { return square; }
+	virtual double get_volume() override { return volume; }
 
 	virtual std::string get_type() const override { return "Cylinder"; }
 };
