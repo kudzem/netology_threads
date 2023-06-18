@@ -28,10 +28,6 @@ Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2,
 		x2 = _x2; y2 = _y2; z2 = _z2;
 		x3 = _x3; y3 = _y3; z3 = _z3;
 		x4 = _x4; y4 = _y4; z4 = _z4;
-		x5 = _x5; y5 = _y5; z5 = _z5;
-		x6 = _x6; y6 = _y6; z6 = _z6;
-		x7 = _x7; y7 = _y7; z7 = _z7;
-		x8 = _x8; y8 = _y8; z8 = _z8;
 		break;
 	default:
 		break;
