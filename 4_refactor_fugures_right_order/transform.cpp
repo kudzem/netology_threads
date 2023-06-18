@@ -59,10 +59,6 @@ Shape transform::scaleDimention(int dimention, double a)
 		break;
 	}
 
-
-	shape.calculate_square();
-	shape.calculate_volume();
-
 	return shape;
 }
 Shape transform::scaleX(double k)

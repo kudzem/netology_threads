@@ -40,7 +40,7 @@ public:
 		return *this;
 	}
 
-	double distance(const ThreeDPoint& other) {
+	double distance(const ThreeDPoint& other) const {
 		return sqrt(pow(_c[0] - other._c[0], 2) + pow(_c[1] - other._c[1], 2) + pow(_c[2] - other._c[2], 2));
 	}
 
@@ -75,13 +75,10 @@ public:
 
 	Shape(int type, ThreeDPoint center, double R, double H);
 	int getType() const { return type; }
-	double getVolume() const { return volume; }
-	double getSquare() const { return square; }
+	double getVolume() const;
+	double getSquare() const;
 	double getHeight() const { return height; }
 	double getRadius() const { return radius; }
-
-	void calculate_volume();
-	void calculate_square();
 
 	void scale_radius(double a) { radius *= a; }
 	void scale_height(double a) { height *= a; }
@@ -89,8 +86,8 @@ public:
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + std::to_string(getType()) + ":\n";
-		res += "volume=" + std::to_string(volume) + ":\n";
-		res += "square=" + std::to_string(square) + ":\n";
+		res += "volume=" + std::to_string(getVolume()) + ":\n";
+		res += "square=" + std::to_string(getSquare()) + ":\n";
 		res += "height=" + std::to_string(height) + ":\n";
 		res += "radius=" + std::to_string(radius) + ":\n";
 		if (type == sqr) {

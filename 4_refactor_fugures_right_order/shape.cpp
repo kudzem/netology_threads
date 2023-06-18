@@ -29,9 +29,6 @@ Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPo
 	default:
 		break;
 	}
-
-	calculate_square();
-	calculate_volume();
 }
 
 Shape::Shape(int _type, ThreeDPoint center, double R, double H) : Shape()
@@ -52,64 +49,56 @@ Shape::Shape(int _type, ThreeDPoint center, double R, double H) : Shape()
 	default:
 		break;
 	}
-
-	calculate_square();
-	calculate_volume();
 }
-void Shape::calculate_volume() {
+
+double Shape::getVolume() const  {
 
 	double a, b, c;
 	switch (type)
 	{
+	case line:
+	case sqr:
+	case circle:
+		return 0;
 	case cylinder:
-		std::cout << "r=" << radius << std::endl;
-		volume = M_PI * radius * radius * height;
-		std::cout << "vol=" << volume << std::endl;
-		break;
+		return M_PI * radius * radius * height;
 	case cube:
 		a = points[0].distance(points[1]);
 		b = points[0].distance(points[2]);
 		c = points[0].distance(points[3]);
-		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
+		//std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
 		// стороны фигуры
-		volume = a * b * c;
-		break;
+		return a * b * c;
 	default:
 		break;
 	}
 }
 
-void Shape::calculate_square() {
+double Shape::getSquare() const {
 
 	double a, b, c;
-
 	switch (type)
 	{
+	case line:
+		return 0;
 	case circle:
-		std::cout << "r=" << radius << std::endl;
-		square = M_PI * radius * radius;
-		std::cout << ",sq=" << square << std::endl;
-		break;
+		return M_PI * radius * radius;
 	case cylinder:
-		std::cout << "r=" << radius << ",h=" << height << std::endl;
-		square = (2 * M_PI * radius * radius) + (2 * M_PI * radius * height);
-		std::cout << ",sq=" << square << std::endl;
+		return (2 * M_PI * radius * radius) + (2 * M_PI * radius * height);
 		break;
 	case sqr:
 		// стороны фигуры
 		a = points[0].distance(points[1]);
 		b = points[0].distance(points[2]);
 		std::cout << "a=" << a << "b=" << b << std::endl;
-		square = a * b;
-		break;
+		return a * b;
 	case cube:
 		// стороны фигуры
 		a = points[0].distance(points[1]);
 		b = points[0].distance(points[2]);
 		c = points[0].distance(points[3]);
 		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
-		square = 2 * (a * b + a * c + b * c);
-		break;
+		return  2 * (a * b + a * c + b * c);
 	default:
 		break;
 	}
