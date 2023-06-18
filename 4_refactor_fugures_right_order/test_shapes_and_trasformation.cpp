@@ -11,7 +11,6 @@ void check_main_shape_parameters_match(Shape* shape, int type) {
 	assert(shape->getType() == type);
 }
 
-
 void check_main_square_parameters_match(Square* shape, int type, double square) {
 	check_main_shape_parameters_match(shape, type);
 	assert(shape->getSquare() == square);
@@ -64,30 +63,24 @@ int main() {
 
 	std::cout << "SHIFT" << std::endl;
 
-	std::vector<transform> transformers;
+	transform transformer;
 
 	for (auto shape : shapes) {
-		transformers.emplace_back(shape);
-	}
-
-	std::vector<Shape*> trasformed_shapes;
-	for (auto& t : transformers) {
-		trasformed_shapes.push_back(t.shift(3,3,3));
+		transformer.shift(shape, 3, 3, 3);
 	}
 
 	//after all figures are shifted - check that parameters are the same
 	check_main_shape_parameters_match(line, 0);
 	check_main_square_parameters_match(static_cast<Square*>(square), 1, 1);
 	check_main_cube_parameters_match(static_cast<Cube*>(cube), 2, 1, 6);
-	check_main_circle_parameters_match(static_cast<Circle*>(trasformed_shapes[3]), 3, 0, M_PI * R * R, R);
-	check_main_cylinder_parameters_match(static_cast<Cylinder*>(trasformed_shapes[4]), 4, M_PI * R * R * H, (2 * M_PI * R*R) + (2 * M_PI * R*H), H, R);
+	check_main_circle_parameters_match(static_cast<Circle*>(circle), 3, 0, M_PI * R * R, R);
+	check_main_cylinder_parameters_match(static_cast<Cylinder*>(cylinder), 4, M_PI * R * R * H, (2 * M_PI * R*R) + (2 * M_PI * R*H), H, R);
 
 	std::cout << "SCALE X" << std::endl;
 
 	double scale_factor = 2;
-	trasformed_shapes.clear();
-	for (auto& t : transformers) {
-		trasformed_shapes.push_back(t.scaleX(scale_factor));
+	for (auto shape : shapes) {
+		transformer.scaleX(shape, scale_factor);
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
@@ -95,8 +88,8 @@ int main() {
 	check_main_square_parameters_match(static_cast<Square*>(square), 1, 2);
 	check_main_cube_parameters_match(static_cast<Cube*>(cube), 2, 2, 10);
 
-	check_main_circle_parameters_match(static_cast<Circle*>(trasformed_shapes[3]), 3, 0, M_PI * R * R * scale_factor * scale_factor, R*scale_factor);
-	check_main_cylinder_parameters_match(static_cast<Cylinder*>(trasformed_shapes[4]), 4,
+	check_main_circle_parameters_match(static_cast<Circle*>(circle), 3, 0, M_PI * R * R * scale_factor * scale_factor, R*scale_factor);
+	check_main_cylinder_parameters_match(static_cast<Cylinder*>(cylinder), 4,
 		                              M_PI * R * R * H * pow(scale_factor,3),
 		                              (2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
 
@@ -104,9 +97,8 @@ int main() {
 	std::cout << "SCALE Z" << std::endl;
 
 	scale_factor = 0.5;
-	trasformed_shapes.clear();
-	for (auto& t : transformers) {
-		trasformed_shapes.push_back(t.scaleZ(scale_factor));
+	for (auto shape : shapes) {
+		transformer.scaleZ(shape, scale_factor);
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
@@ -114,15 +106,15 @@ int main() {
 	check_main_square_parameters_match(static_cast<Square*>(square), 1, 2);
 	check_main_cube_parameters_match(static_cast<Cube*>(cube), 2, 1, 7);
 
-	check_main_circle_parameters_match(static_cast<Circle*>(trasformed_shapes[3]), 3, 0, M_PI * R * R, R);
-	check_main_cylinder_parameters_match(static_cast<Cylinder*>(trasformed_shapes[4]), 4, M_PI * R * R * H, (2 * M_PI * R * R) + (2 * M_PI * R * H), H, R);
+	check_main_circle_parameters_match(static_cast<Circle*>(circle), 3, 0, M_PI * R * R, R);
+	check_main_cylinder_parameters_match(static_cast<Cylinder*>(cylinder), 4, M_PI * R * R * H, (2 * M_PI * R * R) + (2 * M_PI * R * H), H, R);
 
 	std::cout << "SCALE Y" << std::endl;
 
+
 	scale_factor = 2;
-	trasformed_shapes.clear();
-	for (auto& t : transformers) {
-		trasformed_shapes.push_back(t.scaleY(scale_factor));
+	for (auto shape : shapes) {
+		transformer.scaleY(shape, scale_factor);
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
@@ -130,8 +122,8 @@ int main() {
 	check_main_square_parameters_match(static_cast<Square*>(square), 1, 4);
 	check_main_cube_parameters_match(static_cast<Cube*>(cube), 2, 2, 12);
 
-	check_main_circle_parameters_match(static_cast<Circle*>(trasformed_shapes[3]), 3, 0, M_PI * R * R * pow(scale_factor, 2), R * scale_factor);
-	check_main_cylinder_parameters_match(static_cast<Cylinder*>(trasformed_shapes[4]), 4,
+	check_main_circle_parameters_match(static_cast<Circle*>(circle), 3, 0, M_PI * R * R * pow(scale_factor, 2), R * scale_factor);
+	check_main_cylinder_parameters_match(static_cast<Cylinder*>(cylinder), 4,
 		M_PI * R * R * H * pow(scale_factor, 3),
 		(2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
 

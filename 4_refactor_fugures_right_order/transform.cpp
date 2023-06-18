@@ -1,11 +1,6 @@
 #include "transform.h"
 
-transform::transform(Shape* sh)
-{
-	shape = sh;
-}
-
-Shape* transform::shift(int m, int n, int k)
+Shape* transform::shift(Shape* shape, int m, int n, int k)
 {
 	ThreeDPoint shiftObject(m, n, k);
 
@@ -13,32 +8,32 @@ Shape* transform::shift(int m, int n, int k)
 	return shape;
 }
 
-Shape* transform::scaleDimention(int dimention, double a)
+Shape* transform::scaleDimention(Shape* shape, int dimention, double a)
 {
 	shape->scale(dimention, a);
 
 	return shape;
 }
-Shape* transform::scaleX(double k)
+Shape* transform::scaleX(Shape* shape, double k)
 {
-	return scaleDimention(0, k);
+	return scaleDimention(shape, 0, k);
 }
 
-Shape* transform::scaleY(double k)
+Shape* transform::scaleY(Shape* shape, double k)
 {
-	return scaleDimention(1, k);
+	return scaleDimention(shape, 1, k);
 }
 
-Shape* transform::scaleZ(double k)
+Shape* transform::scaleZ(Shape* shape, double k)
 {
-	return scaleDimention(2, k);
+	return scaleDimention(shape, 2, k);
 }
 
-Shape* transform::scale(double k)
+Shape* transform::scale(Shape* shape, double k)
 {
-	scaleX(k);
-	scaleY(k);
-	scaleZ(k);
+	scaleX(shape, k);
+	scaleY(shape, k);
+	scaleZ(shape, k);
 
 	return shape;
 }
