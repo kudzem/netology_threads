@@ -155,25 +155,9 @@ Shape transform::scaleZ(int e)
 
 Shape transform::scale(int s)
 {
-	switch (shape.getType())
-	{
-	case Shape::line:
-		shape.x1 /= s; shape.y1 /= s;
-		shape.x2 /= s; shape.y2 /= s;
-		break;
-	case Shape::sqr:
-		shape.x1 /= s; shape.y1 /= s;
-		shape.x2 /= s; shape.y2 /= s;
-		shape.x3 /= s; shape.y3 /= s;
-		shape.x4 /= s; shape.y4 /= s;
-		break;
-	case Shape::cube:
-		shape.x1 /= s; shape.y1 /= s; shape.z1 /= s;
-		shape.x2 /= s; shape.y2 /= s; shape.z2 /= s;
-		shape.x3 /= s; shape.y3 /= s; shape.z3 /= s;
-		shape.x4 /= s; shape.y4 /= s; shape.z4 /= s;
-		break;
-	}
+	scaleX(s);
+	scaleY(s);
+	scaleZ(s);
 
 	return shape;
 }

@@ -93,7 +93,6 @@ int main() {
 		                              (2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
 
 
-
 	delete line;
 	delete square;
 	delete cube;
