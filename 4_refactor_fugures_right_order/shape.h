@@ -82,17 +82,6 @@ public:
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + getTypeStr() + "(" + std::to_string(getType()) + ")" + ":\n";
-		if (type == sqr) {
-			double a = points[0].distance(points[1]);
-			double b = points[0].distance(points[2]);
-			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ":\n";
-		}
-		if (type == cube) {
-			double a = points[0].distance(points[1]);
-			double b = points[0].distance(points[2]);
-			double c = points[0].distance(points[3]);
-			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ",c=" + std::to_string(c) + ":\n";
-		}
 
 		for (auto& p : points) {
 			res += p.to_string();
@@ -188,6 +177,8 @@ public:
 	std::string to_string() override {
 		std::string res = RotationShape::to_string();
 		res += "height=" + std::to_string(height) + ":\n";
+		res += "square=" + std::to_string(getSquare()) + ":\n";
+		res += "volume=" + std::to_string(getVolume()) + ":\n";
 		return res;
 	}
 
@@ -207,6 +198,12 @@ public:
 	std::string getTypeStr() const override { return "Circle"; }
 
 	double getSquare() const override;
+
+	std::string to_string() override {
+		std::string res = RotationShape::to_string();
+		res += "square=" + std::to_string(getSquare()) + ":\n";
+		return res;
+	}
 };
 
 
@@ -217,6 +214,14 @@ public:
 	virtual std::string getTypeStr() const override { return "Square"; }
 
 	virtual double getSquare() const override;
+
+	std::string to_string() override {
+		std::string res = Shape::to_string();
+		res += "square=" + std::to_string(getSquare()) + ":\n";
+		res += "a=" + std::to_string(points[0].distance(points[1])) +
+			   ",b=" + std::to_string(points[0].distance(points[2])) + ":\n";
+		return res;
+	}
 };
 
 class Cube : public Shape, public HasVolume, public HasSurface {
@@ -227,6 +232,17 @@ public:
 
 	virtual double getSquare() const override;
 	virtual double getVolume() const override;
+
+	std::string to_string() override {
+		std::string res = Shape::to_string();
+		res += "square=" + std::to_string(getSquare()) + ":\n";
+		res += "volume=" + std::to_string(getVolume()) + ":\n";
+		res += "a=" + std::to_string(points[0].distance(points[1])) + 
+			   ",b=" + std::to_string(points[0].distance(points[2])) +
+			   ",c=" + std::to_string(points[0].distance(points[3])) + ":\n";
+		return res;
+	}
+
 };
 
 class Line : public Shape {
@@ -234,4 +250,11 @@ public:
 	Line(ThreeDPoint p1, ThreeDPoint p2) : Shape(Shape::line, p1, p2) {}
 
 	virtual std::string getTypeStr() const override { return "Line"; }
+
+	std::string to_string() override {
+		std::string res = Shape::to_string();
+		res += "a=" + std::to_string(points[0].distance(points[1])) + ":\n";
+		return res;
+	}
+
 };
