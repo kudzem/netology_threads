@@ -29,7 +29,7 @@ int main() {
 
 	const double R = 2;
 	const double H = 5;
-	Shape* circle = new Shape(3, { 1, 1, 0 }, R);
+	Shape* circle = new Circle({ 1, 1, 0 }, R);
 	Shape* cylinder = new Cylinder({ 1, 1, 0 }, R, H);
 
 	std::vector<Shape*> shapes;

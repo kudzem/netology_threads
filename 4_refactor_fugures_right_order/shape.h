@@ -85,7 +85,7 @@ public:
 	virtual
 	std::string to_string() {
 		std::string res;
-		res += "Type=" + std::to_string(getType()) + ":\n";
+		res += "Type=" + getTypeStr() + "(" + std::to_string(getType()) + ")" + ":\n";
 		res += "volume=" + std::to_string(getVolume()) + ":\n";
 		res += "square=" + std::to_string(getSquare()) + ":\n";
 		res += "radius=" + std::to_string(radius) + ":\n";
@@ -172,4 +172,14 @@ public:
 
 	double getVolume() const override;
 	double getSquare() const override;
+};
+
+class Circle : public Shape {
+public:
+	Circle(ThreeDPoint center, int radius) : Shape(Shape::circle, center, radius) {}
+
+	std::string getTypeStr() const override { return "Circle"; }
+
+	//double getVolume() const override;
+	//double getSquare() const override;
 };
