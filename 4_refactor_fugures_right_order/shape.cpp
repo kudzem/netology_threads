@@ -5,8 +5,8 @@
 
 Shape::Shape() : type(-1), volume(0), square(0), radius(0), height(0) {}
 
-Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2,
-	                    int _x3, int _y3, int _z3, int _x4, int _y4, int _z4) : Shape()
+Shape::Shape(int _type, double _x1, double _y1, double _z1, double _x2, double _y2, double _z2,
+	                    double _x3, double _y3, double _z3, double _x4, double _y4, double _z4) : Shape()
 {
 	type = _type;
 	// заполн¤ем координаты фигуры
@@ -93,7 +93,7 @@ void Shape::calculate_square() {
 	}
 }
 
-Shape::Shape(int _type, int x, int y, int z, double R, double H) : Shape()
+Shape::Shape(int _type, double x, double y, double z, double R, double H) : Shape()
 {
 	type = _type;
 	// заполн¤ем координаты фигуры

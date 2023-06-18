@@ -1,6 +1,8 @@
 #pragma once
 #include<string>
 #include <iostream>
+
+
 class Shape
 {
 private:
@@ -23,8 +25,8 @@ public:
 		x4 = 0, y4 = 0, z4 = 0;
 
 	Shape();
-	Shape(int type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, int _x3, int _y3, int _z3, int _x4, int _y4, int _z4);
-	Shape(int type, int x, int y, int z, double R, double H);
+	Shape(int type, double _x1, double _y1, double _z1, double _x2, double _y2, double _z2, double _x3, double _y3, double _z3, double _x4, double _y4, double _z4);
+	Shape(int type, double x, double y, double z, double R, double H);
 	int getType() const { return type; }
 	double getVolume() const { return volume; }
 	double getSquare() const { return square; }
