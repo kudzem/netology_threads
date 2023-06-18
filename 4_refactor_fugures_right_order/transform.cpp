@@ -33,7 +33,7 @@ Shape transform::shift(int m, int n, int k)
 	return shape;
 }
 
-Shape transform::scaleX(int a)
+Shape transform::scaleX(double a)
 {
 	switch (shape.getType())
 	{
@@ -55,16 +55,10 @@ Shape transform::scaleX(int a)
 		break;
 	case Shape::circle:
 		shape.x1 *= a;
-		shape.x2 *= a;
-		shape.x3 *= a;
-		shape.x4 *= a;
 		shape.scale_radius(a);
 		break;
 	case Shape::cylinder:
 		shape.x1 *= a;
-		shape.x2 *= a;
-		shape.x3 *= a;
-		shape.x4 *= a;
 		shape.scale_radius(a);
 		shape.scale_height(a);
 		break;
@@ -77,7 +71,7 @@ Shape transform::scaleX(int a)
 	return shape;
 }
 
-Shape transform::scaleY(int d)
+Shape transform::scaleY(double d)
 {
 	switch (shape.getType())
 	{
@@ -99,23 +93,20 @@ Shape transform::scaleY(int d)
 		break;
 	case Shape::circle:
 		shape.y1 *= d;
-		shape.y2 *= d;
-		shape.y3 *= d;
-		shape.y4 *= d;
 		shape.scale_radius(d);
 		break;
 	case Shape::cylinder:
 		shape.y1 *= d;
-		shape.y2 *= d;
-		shape.y3 *= d;
-		shape.y4 *= d;
 		shape.scale_radius(d);
 		shape.scale_height(d);
 	}
+
+	shape.calculate_square();
+	shape.calculate_volume();
 	return shape;
 }
 
-Shape transform::scaleZ(int e)
+Shape transform::scaleZ(double e)
 {
 	switch (shape.getType())
 	{
@@ -131,7 +122,7 @@ Shape transform::scaleZ(int e)
 		break;
 	case Shape::cube:
 		shape.z1 *= e;
-		shape.y2 *= e;
+		shape.z2 *= e;
 		shape.z3 *= e;
 		shape.z4 *= e;
 		break;
@@ -150,10 +141,13 @@ Shape transform::scaleZ(int e)
 		shape.scale_radius(e);
 		shape.scale_height(e);
 	}
+
+	shape.calculate_square();
+	shape.calculate_volume();
 	return shape;
 }
 
-Shape transform::scale(int s)
+Shape transform::scale(double s)
 {
 	scaleX(s);
 	scaleY(s);

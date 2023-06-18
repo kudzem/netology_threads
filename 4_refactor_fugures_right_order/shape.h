@@ -1,5 +1,6 @@
 #pragma once
 #include<string>
+#include <iostream>
 class Shape
 {
 private:
@@ -16,7 +17,7 @@ public:
 	static const int circle = 3;
 	static const int cylinder = 4;
 
-	int x1 = 0, y1 = 0, z1 = 0,
+	double x1 = 0, y1 = 0, z1 = 0,
 		x2 = 0, y2 = 0, z2 = 0,
 		x3 = 0, y3 = 0, z3 = 0,
 		x4 = 0, y4 = 0, z4 = 0;
@@ -43,6 +44,20 @@ public:
 		res += "square=" + std::to_string(square) + ":\n";
 		res += "height=" + std::to_string(height) + ":\n";
 		res += "radius=" + std::to_string(radius) + ":\n";
+		if (type == sqr) {
+			double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
+			double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
+			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ":\n";
+		}
+		if (type == cube) {
+			double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
+			double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
+
+			std::cout << "SQRT=" << sqrt(pow(z1 - z3, 2)) << std::endl;
+
+			double c = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2) + pow(z1 - z4, 2));
+			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ",c=" + std::to_string(c) + ":\n";
+		}
 		res += std::to_string(x1) + "," + std::to_string(y1) + "," + std::to_string(z1) + "\n";
 		res += std::to_string(x2) + "," + std::to_string(y2) + "," + std::to_string(z2) + "\n";
 		res += std::to_string(x3) + "," + std::to_string(y3) + "," + std::to_string(z3) + "\n";
