@@ -3,7 +3,7 @@
 #include<cmath>
 #include <iostream>
 
-Shape::Shape() : type(-1), volume(0), square(0), radius(0), height(0) {}
+Shape::Shape() : type(-1), volume(0), square(0), radius(0) {}
 
 Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape()
 {
@@ -31,28 +31,23 @@ Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPo
 	}
 }
 
-Shape::Shape(int _type, ThreeDPoint center, double R, double H) : Shape()
+Shape::Shape(int _type, ThreeDPoint center, double R) : Shape()
 {
 	type = _type;
 	// заполн¤ем координаты фигуры
 	switch (type)
 	{
 	case circle:
-		points.push_back(center);
-		radius = R;
-		break;
 	case cylinder:
 		points.push_back(center);
 		radius = R;
-		height = H;
 		break;
 	default:
 		break;
 	}
 }
 
-double Shape::getVolume() const  {
-
+ double Shape::getVolume() const {
 	double a, b, c;
 	switch (type)
 	{
@@ -61,18 +56,18 @@ double Shape::getVolume() const  {
 	case circle:
 		return 0;
 	case cylinder:
-		return M_PI * radius * radius * height;
+		return 0;
 	case cube:
 		a = points[0].distance(points[1]);
 		b = points[0].distance(points[2]);
 		c = points[0].distance(points[3]);
 		//std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
-		// стороны фигуры
 		return a * b * c;
 	default:
 		break;
-	}
+	};
 }
+
 
 double Shape::getSquare() const {
 
@@ -84,8 +79,7 @@ double Shape::getSquare() const {
 	case circle:
 		return M_PI * radius * radius;
 	case cylinder:
-		return (2 * M_PI * radius * radius) + (2 * M_PI * radius * height);
-		break;
+		return 0;
 	case sqr:
 		// стороны фигуры
 		a = points[0].distance(points[1]);
@@ -102,4 +96,12 @@ double Shape::getSquare() const {
 	default:
 		break;
 	}
+}
+
+double Cylinder::getVolume() const {
+	return M_PI * getRadius() * getRadius() * height;
+}
+
+double Cylinder::getSquare() const {
+	return (2 * M_PI * getRadius() * getRadius()) + (2 * M_PI * getRadius() * height);
 }

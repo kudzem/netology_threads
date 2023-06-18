@@ -1,4 +1,7 @@
 #pragma once
+
+#define _USE_MATH_DEFINES
+
 #include<string>
 #include<array>
 #include<vector>
@@ -58,7 +61,6 @@ private:
 	int type;
 	double volume;
 	double square;
-	double height;
 	double radius;
 
 public:
@@ -73,22 +75,19 @@ public:
 	Shape();
 	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
 
-	Shape(int type, ThreeDPoint center, double R, double H);
+	Shape(int type, ThreeDPoint center, double R);
 	int getType() const { return type; }
-	double getVolume() const;
-	double getSquare() const;
-	double getHeight() const { return height; }
+	virtual std::string getTypeStr() const { return "Shape"; }
 	double getRadius() const { return radius; }
 
 	void scale_radius(double a) { radius *= a; }
-	void scale_height(double a) { height *= a; }
 
+	virtual
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + std::to_string(getType()) + ":\n";
 		res += "volume=" + std::to_string(getVolume()) + ":\n";
 		res += "square=" + std::to_string(getSquare()) + ":\n";
-		res += "height=" + std::to_string(height) + ":\n";
 		res += "radius=" + std::to_string(radius) + ":\n";
 		if (type == sqr) {
 			double a = points[0].distance(points[1]);
@@ -107,4 +106,70 @@ public:
 		}
 		return res;
 	}
+
+	Shape& shift(const ThreeDPoint& value) {
+		for (auto& point : points) {
+			point = point + value;
+		}
+
+		return *this;
+	}
+
+	virtual Shape& scale(int dimention, double factor) {
+		for (auto& point : points) {
+			point.scale(dimention, factor);
+		}
+
+		scale_radius(factor);
+
+		return *this;
+	}
+
+	virtual Shape& scale(double factor) {
+		for (auto& point : points) {
+			point.scale(factor);
+		}
+
+		scale_radius(factor);
+
+		return *this;
+	}
+
+	virtual double getVolume() const;
+	virtual double getSquare() const;
+
+};
+
+class Cylinder : public Shape {
+private:
+	double height = 0;
+public:
+	Cylinder(ThreeDPoint center, int radius, int height) : Shape(Shape::cylinder, center, radius), height(height) {}
+
+	virtual Shape& scale(double factor) override {
+		Shape::scale(factor);
+		height *= factor;
+
+		return *this;
+	}
+
+	virtual Shape& scale(int dimention, double factor) {
+		Shape::scale(dimention, factor);
+		height *= factor;
+		return *this;
+	}
+
+	std::string to_string() override {
+		std::string res = Shape::to_string();
+		res += "height=" + std::to_string(height) + ":\n";
+		return res;
+	}
+
+	double getHeight() const { return height; }
+	void scale_height(double a) { height *= a; }
+
+	std::string getTypeStr() const override { return "Cylinder"; }
+
+	double getVolume() const override;
+	double getSquare() const override;
 };

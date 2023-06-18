@@ -12,8 +12,13 @@ void check_main_shape_parameters_match(Shape* shape, int type, double volume, do
 	//std::cout << shape->getVolume() << "/" << volume <<std::endl;
 	assert(shape->getVolume() == volume);
 	assert(shape->getSquare() == square);
-	assert(shape->getHeight() == height);
 	assert(shape->getRadius() == radius);
+}
+
+void check_main_cylinder_parameters_match(Cylinder* shape, int type, double volume, double square, double height, double radius) {
+	check_main_shape_parameters_match(shape, type, volume, square, height, radius);
+	assert(shape->getHeight() == height);
+	
 }
 
 int main() {
@@ -24,8 +29,8 @@ int main() {
 
 	const double R = 2;
 	const double H = 5;
-	Shape* circle = new Shape(3, { 1, 1, 0 }, R, 0);
-	Shape* cylinder = new Shape(4, { 1, 1, 0 }, R, H);
+	Shape* circle = new Shape(3, { 1, 1, 0 }, R);
+	Shape* cylinder = new Cylinder({ 1, 1, 0 }, R, H);
 
 	std::vector<Shape*> shapes;
 
@@ -46,20 +51,20 @@ int main() {
 	std::vector<transform> transformers;
 
 	for (auto shape : shapes) {
-		transformers.emplace_back(*shape);
+		transformers.emplace_back(shape);
 	}
 
-	std::vector<Shape> trasformed_shapes;
+	std::vector<Shape*> trasformed_shapes;
 	for (auto& t : transformers) {
 		trasformed_shapes.push_back(t.shift(3,3,3));
 	}
 
 	//after all figures are shifted - check that parameters are the same
-	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 1, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 1, 6, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R, 0, R);
-	check_main_shape_parameters_match(&trasformed_shapes[4], 4, M_PI * R * R * H, (2 * M_PI * R*R) + (2 * M_PI * R*H), H, R);
+	check_main_shape_parameters_match(trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[1], 1, 0, 1, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[2], 2, 1, 6, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[3], 3, 0, M_PI * R * R, 0, R);
+	check_main_shape_parameters_match(trasformed_shapes[4], 4, M_PI * R * R * H, (2 * M_PI * R*R) + (2 * M_PI * R*H), H, R);
 
 	std::cout << "SCALE X" << std::endl;
 
@@ -70,11 +75,11 @@ int main() {
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
-	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 2, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 2, 10, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R * scale_factor * scale_factor, 0, R*scale_factor);
-	check_main_shape_parameters_match(&trasformed_shapes[4], 4,
+	check_main_shape_parameters_match(trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[1], 1, 0, 2, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[2], 2, 2, 10, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[3], 3, 0, M_PI * R * R * scale_factor * scale_factor, 0, R*scale_factor);
+	check_main_shape_parameters_match(trasformed_shapes[4], 4,
 		                              M_PI * R * R * H * pow(scale_factor,3),
 		                              (2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
 
@@ -88,11 +93,11 @@ int main() {
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
-	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 2, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 1, 7, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R, 0, R);
-	check_main_shape_parameters_match(&trasformed_shapes[4], 4, M_PI * R * R * H, (2 * M_PI * R * R) + (2 * M_PI * R * H), H, R);
+	check_main_shape_parameters_match(trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[1], 1, 0, 2, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[2], 2, 1, 7, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[3], 3, 0, M_PI * R * R, 0, R);
+	check_main_shape_parameters_match(trasformed_shapes[4], 4, M_PI * R * R * H, (2 * M_PI * R * R) + (2 * M_PI * R * H), H, R);
 
 	std::cout << "SCALE Y" << std::endl;
 
@@ -103,15 +108,13 @@ int main() {
 	}
 
 	//after all figures are scaled - check that parameters are changed correctly
-	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 4, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 2, 12, 0, 0);
-	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R * pow(scale_factor, 2), 0, R * scale_factor);
-	check_main_shape_parameters_match(&trasformed_shapes[4], 4,
+	check_main_shape_parameters_match(trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[1], 1, 0, 4, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[2], 2, 2, 12, 0, 0);
+	check_main_shape_parameters_match(trasformed_shapes[3], 3, 0, M_PI * R * R * pow(scale_factor, 2), 0, R * scale_factor);
+	check_main_shape_parameters_match(trasformed_shapes[4], 4,
 		M_PI * R * R * H * pow(scale_factor, 3),
 		(2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
-
-
 
 	delete line;
 	delete square;
