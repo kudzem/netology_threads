@@ -94,6 +94,24 @@ int main() {
 	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R, 0, R);
 	check_main_shape_parameters_match(&trasformed_shapes[4], 4, M_PI * R * R * H, (2 * M_PI * R * R) + (2 * M_PI * R * H), H, R);
 
+	std::cout << "SCALE Y" << std::endl;
+
+	scale_factor = 2;
+	trasformed_shapes.clear();
+	for (auto& t : transformers) {
+		trasformed_shapes.push_back(t.scaleY(scale_factor));
+	}
+
+	//after all figures are scaled - check that parameters are changed correctly
+	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 4, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 2, 12, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * R * R * pow(scale_factor, 2), 0, R * scale_factor);
+	check_main_shape_parameters_match(&trasformed_shapes[4], 4,
+		M_PI * R * R * H * pow(scale_factor, 3),
+		(2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
+
+
 
 	delete line;
 	delete square;
