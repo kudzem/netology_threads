@@ -1,7 +1,56 @@
 #pragma once
 #include<string>
-#include <iostream>
+#include<array>
+#include<vector>
+#include<algorithm>
 
+struct ThreeDPoint {
+	std::array<double, 3> _c;
+public:
+	ThreeDPoint(double x, double y, double z) : _c{ x,y,z } {}
+	ThreeDPoint(const ThreeDPoint& other) : _c(other._c) {}
+	ThreeDPoint() : _c{ 0,0,0 } {}
+
+	ThreeDPoint& operator+(const ThreeDPoint& other) {
+		_c[0] += other._c[0];
+		_c[1] += other._c[1];
+		_c[2] += other._c[2];
+		return *this;
+	}
+
+	ThreeDPoint& operator=(const ThreeDPoint& other) {
+		_c = other._c;
+		return *this;
+	}
+
+	ThreeDPoint& operator*(double factor) {
+		std::for_each(_c.begin(), _c.end(), [factor](double& value) { value *= factor; });
+		return *this;
+	}
+
+	ThreeDPoint& scale(int dimention, double factor) {
+		_c[dimention] *= factor;
+		return *this;
+	}
+
+	ThreeDPoint& scale(double factor) {
+		_c[0] *= factor;
+		_c[1] *= factor;
+		_c[2] *= factor;
+		return *this;
+	}
+
+	double distance(const ThreeDPoint& other) {
+		return sqrt(pow(_c[0] - other._c[0], 2) + pow(_c[1] - other._c[1], 2) + pow(_c[2] - other._c[2], 2));
+	}
+
+	std::string to_string() {
+		std::string res;
+		res += "Point: ";
+		std::for_each(_c.begin(), _c.end(), [&res](int val) { res += std::to_string(val) + ","; });
+		return res;
+	}
+};
 
 class Shape
 {
@@ -19,14 +68,12 @@ public:
 	static const int circle = 3;
 	static const int cylinder = 4;
 
-	double x1 = 0, y1 = 0, z1 = 0,
-		x2 = 0, y2 = 0, z2 = 0,
-		x3 = 0, y3 = 0, z3 = 0,
-		x4 = 0, y4 = 0, z4 = 0;
+	std::vector<ThreeDPoint> points;
 
 	Shape();
-	Shape(int type, double _x1, double _y1, double _z1, double _x2, double _y2, double _z2, double _x3, double _y3, double _z3, double _x4, double _y4, double _z4);
-	Shape(int type, double x, double y, double z, double R, double H);
+	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
+
+	Shape(int type, ThreeDPoint center, double R, double H);
 	int getType() const { return type; }
 	double getVolume() const { return volume; }
 	double getSquare() const { return square; }
@@ -47,23 +94,20 @@ public:
 		res += "height=" + std::to_string(height) + ":\n";
 		res += "radius=" + std::to_string(radius) + ":\n";
 		if (type == sqr) {
-			double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
-			double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
+			double a = points[0].distance(points[1]);
+			double b = points[0].distance(points[2]);
 			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ":\n";
 		}
 		if (type == cube) {
-			double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
-			double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
-
-			std::cout << "SQRT=" << sqrt(pow(z1 - z3, 2)) << std::endl;
-
-			double c = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2) + pow(z1 - z4, 2));
+			double a = points[0].distance(points[1]);
+			double b = points[0].distance(points[2]);
+			double c = points[0].distance(points[3]);
 			res += "a=" + std::to_string(a) + ",b=" + std::to_string(b) + ",c=" + std::to_string(c) + ":\n";
 		}
-		res += std::to_string(x1) + "," + std::to_string(y1) + "," + std::to_string(z1) + "\n";
-		res += std::to_string(x2) + "," + std::to_string(y2) + "," + std::to_string(z2) + "\n";
-		res += std::to_string(x3) + "," + std::to_string(y3) + "," + std::to_string(z3) + "\n";
-		res += std::to_string(x4) + "," + std::to_string(y4) + "," + std::to_string(z4) + "\n";
+
+		for (auto& p : points) {
+			res += p.to_string();
+		}
 		return res;
 	}
 };

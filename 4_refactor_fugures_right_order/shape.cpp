@@ -5,28 +5,26 @@
 
 Shape::Shape() : type(-1), volume(0), square(0), radius(0), height(0) {}
 
-Shape::Shape(int _type, double _x1, double _y1, double _z1, double _x2, double _y2, double _z2,
-	                    double _x3, double _y3, double _z3, double _x4, double _y4, double _z4) : Shape()
+Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape()
 {
 	type = _type;
 	// заполн¤ем координаты фигуры
 	switch (type)
 	{
 	case line:
-		x1 = _x1; y1 = _y1; z1 = _z1;
-		x2 = _x2; y2 = _y2; z2 = _z2;
+		points.push_back(p1);
+		points.push_back(p2);
 		break;
 	case sqr:
-		x1 = _x1; y1 = _y1; z1 = _z1;
-		x2 = _x2; y2 = _y2; z2 = _z2;
-		x3 = _x3; y3 = _y3; z3 = _z3;
-		x4 = _x4; y4 = _y4; z4 = _z4;
+		points.push_back(p1);
+		points.push_back(p2);
+		points.push_back(p3);
 		break;
 	case cube:
-		x1 = _x1; y1 = _y1; z1 = _z1;
-		x2 = _x2; y2 = _y2; z2 = _z2;
-		x3 = _x3; y3 = _y3; z3 = _z3;
-		x4 = _x4; y4 = _y4; z4 = _z4;
+		points.push_back(p1);
+		points.push_back(p2);
+		points.push_back(p3);
+		points.push_back(p4);
 		break;
 	default:
 		break;
@@ -36,14 +34,31 @@ Shape::Shape(int _type, double _x1, double _y1, double _z1, double _x2, double _
 	calculate_volume();
 }
 
+Shape::Shape(int _type, ThreeDPoint center, double R, double H) : Shape()
+{
+	type = _type;
+	// заполн¤ем координаты фигуры
+	switch (type)
+	{
+	case circle:
+		points.push_back(center);
+		radius = R;
+		break;
+	case cylinder:
+		points.push_back(center);
+		radius = R;
+		height = H;
+		break;
+	default:
+		break;
+	}
+
+	calculate_square();
+	calculate_volume();
+}
 void Shape::calculate_volume() {
 
-	double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
-	double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
-
-	std::cout << "SQRT=" << pow(y1 - y3, 2) << std::endl;
-	double c = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2) + pow(z1 - z4, 2));
-
+	double a, b, c;
 	switch (type)
 	{
 	case cylinder:
@@ -52,6 +67,9 @@ void Shape::calculate_volume() {
 		std::cout << "vol=" << volume << std::endl;
 		break;
 	case cube:
+		a = points[0].distance(points[1]);
+		b = points[0].distance(points[2]);
+		c = points[0].distance(points[3]);
 		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
 		// стороны фигуры
 		volume = a * b * c;
@@ -62,12 +80,9 @@ void Shape::calculate_volume() {
 }
 
 void Shape::calculate_square() {
-	// стороны фигуры
-	double a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
-	double b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(z1 - z3, 2));
-	double c = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2) + pow(z1 - z4, 2));
 
-	// считаем площадь фигуры
+	double a, b, c;
+
 	switch (type)
 	{
 	case circle:
@@ -81,37 +96,21 @@ void Shape::calculate_square() {
 		std::cout << ",sq=" << square << std::endl;
 		break;
 	case sqr:
-		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
+		// стороны фигуры
+		a = points[0].distance(points[1]);
+		b = points[0].distance(points[2]);
+		std::cout << "a=" << a << "b=" << b << std::endl;
 		square = a * b;
 		break;
 	case cube:
+		// стороны фигуры
+		a = points[0].distance(points[1]);
+		b = points[0].distance(points[2]);
+		c = points[0].distance(points[3]);
 		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
 		square = 2 * (a * b + a * c + b * c);
 		break;
 	default:
 		break;
 	}
-}
-
-Shape::Shape(int _type, double x, double y, double z, double R, double H) : Shape()
-{
-	type = _type;
-	// заполн¤ем координаты фигуры
-	switch (type)
-	{
-	case circle:
-		x1 = x; y1 = y; z1 = z;
-		radius = R;
-		break;
-	case cylinder:
-		x1 = x; y1 = y; z1 = z;
-		radius = R;
-		height = H;
-		break;
-	default:
-		break;
-	}
-
-	calculate_square();
-    calculate_volume();
 }

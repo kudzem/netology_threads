@@ -18,14 +18,14 @@ void check_main_shape_parameters_match(Shape* shape, int type, double volume, do
 
 int main() {
 
-	Shape* line =   new Shape(0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0);
-	Shape* square = new Shape(1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0);
-	Shape* cube =   new Shape(2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0);
+	Shape* line = new Shape(0, { 1, 1, 1 }, { 2, 2, 2 }, { 0, 0, 0 }, { 0, 0, 0 });
+	Shape* square = new Shape(1, { 1, 1, 0 }, { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 });
+	Shape* cube = new Shape(2, { 0, 0, 0 }, { 1, 0, 0 }, { 0, 0, 1 }, { 0, 1, 0 });
 
 	const double R = 2;
 	const double H = 5;
-	Shape* circle = new Shape(3, 1, 1, 0, R, 0);
-	Shape* cylinder = new Shape(4, 1, 1, 0, R, H);
+	Shape* circle = new Shape(3, { 1, 1, 0 }, R, 0);
+	Shape* cylinder = new Shape(4, { 1, 1, 0 }, R, H);
 
 	std::vector<Shape*> shapes;
 
