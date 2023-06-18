@@ -17,9 +17,9 @@ void check_main_shape_parameters_match(Shape* shape, int type, double volume, do
 
 int main() {
 
-	Shape* line =   new Shape(0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	Shape* square = new Shape(1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	Shape* cube =   new Shape(2, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1);
+	Shape* line =   new Shape(0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0, 0, 0);
+	Shape* square = new Shape(1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0);
+	Shape* cube =   new Shape(2, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0);
 	Shape* circle = new Shape(3, 1, 1, 0, 2, 0);
 	Shape* cylinder = new Shape(4, 1, 1, 0, 2, 5);
 
@@ -38,9 +38,34 @@ int main() {
 	check_main_shape_parameters_match(line, 0, 0, 0, 0, 0);
 	check_main_shape_parameters_match(square, 1, 0, 1, 0, 0);
 	check_main_shape_parameters_match(cube, 2, 1, 6, 0, 0);
-
 	check_main_shape_parameters_match(circle, 3, 0, M_PI*2*2, 0, 2);
 	check_main_shape_parameters_match(cylinder, 4, 2 * M_PI * 2 * 5, (2 * M_PI * 2 * 2) + (2 * M_PI * 2 * 5), 5, 2);
+
+	//shift all figures and check that parameters are the same
+	for (auto shape : shapes) {
+		std::cout << shape->to_string() << std::endl;
+	}
+
+	std::vector<transform> transformers;
+
+	for (auto shape : shapes) {
+		transformers.emplace_back(*shape);
+	}
+
+	std::vector<Shape> trasformed_shapes;
+	for (auto& t : transformers) {
+		trasformed_shapes.push_back(t.shift(3,3,3));
+	}
+
+	for (auto& shape : trasformed_shapes) {
+		std::cout << shape.to_string() << std::endl;
+	}
+
+	check_main_shape_parameters_match(&trasformed_shapes[0], 0, 0, 0, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[1], 1, 0, 1, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[2], 2, 1, 6, 0, 0);
+	check_main_shape_parameters_match(&trasformed_shapes[3], 3, 0, M_PI * 2 * 2, 0, 2);
+	check_main_shape_parameters_match(&trasformed_shapes[4], 4, 2 * M_PI * 2 * 5, (2 * M_PI * 2 * 2) + (2 * M_PI * 2 * 5), 5, 2);
 
 	delete line;
 	delete square;

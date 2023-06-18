@@ -13,6 +13,10 @@ Shape transform::shift(int m, int n, int k)
 		shape.x1 += m; shape.y1 += n;
 		shape.x2 += m; shape.y2 += n;
 		break;
+	case Shape::circle:
+	case Shape::cylinder:
+		shape.x1 += m; shape.y1 += n; shape.z1 += k;
+		break;
 	case Shape::sqr:
 		shape.x1 += m; shape.y1 += n;
 		shape.x2 += m; shape.y2 += n;
