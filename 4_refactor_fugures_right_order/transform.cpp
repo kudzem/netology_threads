@@ -53,7 +53,27 @@ Shape transform::scaleX(int a)
 		shape.x3 *= a;
 		shape.x4 *= a;
 		break;
+	case Shape::circle:
+		shape.x1 *= a;
+		shape.x2 *= a;
+		shape.x3 *= a;
+		shape.x4 *= a;
+		shape.scale_radius(a);
+		break;
+	case Shape::cylinder:
+		shape.x1 *= a;
+		shape.x2 *= a;
+		shape.x3 *= a;
+		shape.x4 *= a;
+		shape.scale_radius(a);
+		shape.scale_height(a);
+		break;
 	}
+
+
+	shape.calculate_square();
+	shape.calculate_volume();
+
 	return shape;
 }
 
@@ -77,6 +97,20 @@ Shape transform::scaleY(int d)
 		shape.y3 *= d;
 		shape.y4 *= d;
 		break;
+	case Shape::circle:
+		shape.y1 *= d;
+		shape.y2 *= d;
+		shape.y3 *= d;
+		shape.y4 *= d;
+		shape.scale_radius(d);
+		break;
+	case Shape::cylinder:
+		shape.y1 *= d;
+		shape.y2 *= d;
+		shape.y3 *= d;
+		shape.y4 *= d;
+		shape.scale_radius(d);
+		shape.scale_height(d);
 	}
 	return shape;
 }
@@ -101,6 +135,20 @@ Shape transform::scaleZ(int e)
 		shape.z3 *= e;
 		shape.z4 *= e;
 		break;
+	case Shape::circle:
+		shape.z1 *= e;
+		shape.z2 *= e;
+		shape.z3 *= e;
+		shape.z4 *= e;
+		shape.scale_radius(e);
+		break;
+	case Shape::cylinder:
+		shape.z1 *= e;
+		shape.z2 *= e;
+		shape.z3 *= e;
+		shape.z4 *= e;
+		shape.scale_radius(e);
+		shape.scale_height(e);
 	}
 	return shape;
 }

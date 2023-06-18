@@ -30,6 +30,12 @@ public:
 	double getHeight() const { return height; }
 	double getRadius() const { return radius; }
 
+	void calculate_volume();
+	void calculate_square();
+
+	void scale_radius(double a) { radius *= a; }
+	void scale_height(double a) { height *= a; }
+
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + std::to_string(getType()) + ":\n";
