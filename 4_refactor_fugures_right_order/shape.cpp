@@ -74,18 +74,18 @@ Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2,
 	}
 }
 
-Shape::Shape(int _type, int _x1, int _y1, double R, double H) : Shape()
+Shape::Shape(int _type, int x, int y, int z, double R, double H) : Shape()
 {
 	type = _type;
 	// заполн¤ем координаты фигуры
 	switch (type)
 	{
 	case circle:
-		x1 = _x1; y1 = _y1;
+		x1 = x; y1 = y; z1 = z;
 		radius = R;
 		break;
 	case cylinder:
-		x1 = _x1; y1 = _y1;
+		x1 = x; y1 = y; z1 = z;
 		radius = R;
 		height = H;
 		break;
