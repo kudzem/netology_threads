@@ -69,8 +69,9 @@ Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2, in
 
 }
 
-Shape::Shape(int type, int _x1, int _y1, double R, double H)
+Shape::Shape(int _type, int _x1, int _y1, double R, double H)
 {
+	type = _type;
 	// заполн¤ем координаты фигуры
 	switch (type)
 	{
