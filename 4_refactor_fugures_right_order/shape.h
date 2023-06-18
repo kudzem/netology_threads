@@ -61,7 +61,6 @@ private:
 	int type;
 	double volume;
 	double square;
-	double radius;
 
 public:
 	static const int line = 0;
@@ -75,12 +74,9 @@ public:
 	Shape();
 	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
 
-	Shape(int type, ThreeDPoint center, double R);
+	Shape(int type, ThreeDPoint center);
 	int getType() const { return type; }
 	virtual std::string getTypeStr() const { return "Shape"; }
-	double getRadius() const { return radius; }
-
-	void scale_radius(double a) { radius *= a; }
 
 	virtual
 	std::string to_string() {
@@ -88,7 +84,6 @@ public:
 		res += "Type=" + getTypeStr() + "(" + std::to_string(getType()) + ")" + ":\n";
 		res += "volume=" + std::to_string(getVolume()) + ":\n";
 		res += "square=" + std::to_string(getSquare()) + ":\n";
-		res += "radius=" + std::to_string(radius) + ":\n";
 		if (type == sqr) {
 			double a = points[0].distance(points[1]);
 			double b = points[0].distance(points[2]);
@@ -120,8 +115,6 @@ public:
 			point.scale(dimention, factor);
 		}
 
-		scale_radius(factor);
-
 		return *this;
 	}
 
@@ -129,8 +122,6 @@ public:
 		for (auto& point : points) {
 			point.scale(factor);
 		}
-
-		scale_radius(factor);
 
 		return *this;
 	}
@@ -140,21 +131,51 @@ public:
 
 };
 
-class Cylinder : public Shape {
+class RotationShape : public Shape {
 private:
-	double height = 0;
+	double radius = 0;
 public:
-	Cylinder(ThreeDPoint center, int radius, int height) : Shape(Shape::cylinder, center, radius), height(height) {}
+	RotationShape(int type, ThreeDPoint center, int radius) : Shape(type, center), radius(radius) {}
 
 	virtual Shape& scale(double factor) override {
 		Shape::scale(factor);
+		scaleRadius(factor);
+		return *this;
+	}
+
+	virtual Shape& scale(int dimention, double factor) {
+		Shape::scale(dimention, factor);
+		scaleRadius(factor);
+		return *this;
+	}
+
+	std::string to_string() override {
+		std::string res = Shape::to_string();
+		res += "radius=" + std::to_string(radius) + ":\n";
+		return res;
+	}
+
+	double getRadius() const { return radius; }
+	void scaleRadius(double a) { radius *= a; }
+
+	std::string getTypeStr() const override { return "RotationShape"; }
+};
+
+class Cylinder : public RotationShape {
+private:
+	double height = 0;
+public:
+	Cylinder(ThreeDPoint center, double radius, double height) : RotationShape(Shape::cylinder, center, radius), height(height) {}
+
+	virtual Shape& scale(double factor) override {
+		RotationShape::scale(factor);
 		height *= factor;
 
 		return *this;
 	}
 
 	virtual Shape& scale(int dimention, double factor) {
-		Shape::scale(dimention, factor);
+		RotationShape::scale(dimention, factor);
 		height *= factor;
 		return *this;
 	}
@@ -174,12 +195,12 @@ public:
 	double getSquare() const override;
 };
 
-class Circle : public Shape {
+class Circle : public RotationShape {
 public:
-	Circle(ThreeDPoint center, int radius) : Shape(Shape::circle, center, radius) {}
+	Circle(ThreeDPoint center, double radius) : RotationShape(Shape::circle, center, radius) {}
 
 	std::string getTypeStr() const override { return "Circle"; }
 
-	//double getVolume() const override;
-	//double getSquare() const override;
+	double getVolume() const override;
+	double getSquare() const override;
 };

@@ -3,7 +3,7 @@
 #include<cmath>
 #include <iostream>
 
-Shape::Shape() : type(-1), volume(0), square(0), radius(0) {}
+Shape::Shape() : type(-1), volume(0), square(0) {}
 
 Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape()
 {
@@ -31,16 +31,15 @@ Shape::Shape(int _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPo
 	}
 }
 
-Shape::Shape(int _type, ThreeDPoint center, double R) : Shape()
+Shape::Shape(int _type, ThreeDPoint center) : Shape()
 {
 	type = _type;
-	// заполн¤ем координаты фигуры
+
 	switch (type)
 	{
 	case circle:
 	case cylinder:
 		points.push_back(center);
-		radius = R;
 		break;
 	default:
 		break;
@@ -77,7 +76,6 @@ double Shape::getSquare() const {
 	case line:
 		return 0;
 	case circle:
-		return M_PI * radius * radius;
 	case cylinder:
 		return 0;
 	case sqr:
@@ -104,4 +102,12 @@ double Cylinder::getVolume() const {
 
 double Cylinder::getSquare() const {
 	return (2 * M_PI * getRadius() * getRadius()) + (2 * M_PI * getRadius() * height);
+}
+
+double Circle::getVolume() const {
+	return 0;
+}
+
+double Circle::getSquare() const {
+	return M_PI * getRadius() * getRadius();
 }
