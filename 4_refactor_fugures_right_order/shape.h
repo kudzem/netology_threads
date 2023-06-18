@@ -59,8 +59,6 @@ class Shape
 {
 private:
 	int type;
-	double volume;
-	double square;
 
 public:
 	static const int line = 0;
@@ -72,6 +70,8 @@ public:
 	std::vector<ThreeDPoint> points;
 
 	Shape();
+	Shape(int type, ThreeDPoint p1, ThreeDPoint p2);
+	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3);
 	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
 
 	Shape(int type, ThreeDPoint center);
@@ -216,6 +216,15 @@ public:
 	double getSquare() const override;
 };
 
+
+class Square : public HasSurface, public Shape {
+public:
+	Square(ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) : Shape(Shape::sqr, p1, p2, p3), HasSurface() {}
+
+	virtual std::string getTypeStr() const override { return "Square"; }
+
+	virtual double getSquare() const override;
+};
 
 class Cube : public Shape, public HasVolume, public HasSurface {
 public:

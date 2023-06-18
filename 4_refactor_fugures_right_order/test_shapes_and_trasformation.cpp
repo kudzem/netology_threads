@@ -27,7 +27,7 @@ void check_main_cylinder_parameters_match(Cylinder* shape, int type, double volu
 int main() {
 
 	Shape* line = new Shape(0, { 1, 1, 1 }, { 2, 2, 2 }, { 0, 0, 0 }, { 0, 0, 0 });
-	Shape* square = new Shape(1, { 1, 1, 0 }, { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 0 });
+	Shape* square = new Square({ 1, 1, 0 }, { 1, 0, 0 }, { 0, 1, 0 });
 	Shape* cube = new Cube( { 0, 0, 0 }, { 1, 0, 0 }, { 0, 0, 1 }, { 0, 1, 0 });
 
 	const double R = 2;
@@ -120,7 +120,7 @@ int main() {
 		(2 * M_PI * R * R * pow(scale_factor, 2)) + (2 * M_PI * R * H * pow(scale_factor, 2)), H * scale_factor, R * scale_factor);
 
 	delete line;
-	delete square;
+	//delete square;
 	delete cube;
 	delete circle;
 	delete cylinder;
