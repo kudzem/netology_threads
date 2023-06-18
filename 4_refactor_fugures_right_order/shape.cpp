@@ -85,12 +85,7 @@ double Shape::getSquare() const {
 		std::cout << "a=" << a << "b=" << b << std::endl;
 		return a * b;
 	case cube:
-		// стороны фигуры
-		a = points[0].distance(points[1]);
-		b = points[0].distance(points[2]);
-		c = points[0].distance(points[3]);
-		std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
-		return  2 * (a * b + a * c + b * c);
+		return 0;
 	default:
 		break;
 	}
@@ -110,4 +105,21 @@ double Circle::getVolume() const {
 
 double Circle::getSquare() const {
 	return M_PI * getRadius() * getRadius();
+}
+
+double Cube::getVolume() const {
+	double a, b, c;
+	a = points[0].distance(points[1]);
+	b = points[0].distance(points[2]);
+	c = points[0].distance(points[3]);
+	//std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
+	return a * b * c;
+}
+
+double Cube::getSquare() const {
+	double a, b, c;
+	a = points[0].distance(points[1]);
+	b = points[0].distance(points[2]);
+	c = points[0].distance(points[3]);
+	return  2 * (a * b + a * c + b * c);
 }

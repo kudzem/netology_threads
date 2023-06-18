@@ -131,11 +131,22 @@ public:
 
 };
 
+class HasSurface {
+public:
+	virtual double getSquare() const = 0;
+
+};
+
+class HasVolume {
+public:
+	virtual double getVolume() const = 0;
+};
+
 class RotationShape : public Shape {
 private:
 	double radius = 0;
 public:
-	RotationShape(int type, ThreeDPoint center, int radius) : Shape(type, center), radius(radius) {}
+	RotationShape(int type, ThreeDPoint center, double radius) : Shape(type, center), radius(radius) {}
 
 	virtual Shape& scale(double factor) override {
 		Shape::scale(factor);
@@ -161,11 +172,11 @@ public:
 	std::string getTypeStr() const override { return "RotationShape"; }
 };
 
-class Cylinder : public RotationShape {
+class Cylinder : public RotationShape, public HasVolume, public HasSurface {
 private:
 	double height = 0;
 public:
-	Cylinder(ThreeDPoint center, double radius, double height) : RotationShape(Shape::cylinder, center, radius), height(height) {}
+	Cylinder(ThreeDPoint center, double radius, double height) : RotationShape(Shape::cylinder, center, radius), HasVolume(), HasSurface(), height(height) {}
 
 	virtual Shape& scale(double factor) override {
 		RotationShape::scale(factor);
@@ -195,12 +206,23 @@ public:
 	double getSquare() const override;
 };
 
-class Circle : public RotationShape {
+class Circle : public RotationShape, public HasSurface {
 public:
-	Circle(ThreeDPoint center, double radius) : RotationShape(Shape::circle, center, radius) {}
+	Circle(ThreeDPoint center, double radius) : RotationShape(Shape::circle, center, radius), HasSurface() {}
 
 	std::string getTypeStr() const override { return "Circle"; }
 
 	double getVolume() const override;
 	double getSquare() const override;
+};
+
+
+class Cube : public Shape, public HasVolume, public HasSurface {
+public:
+	Cube(ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape(Shape::cube, p1, p2, p3, p4), HasVolume(), HasSurface() {}
+
+	virtual std::string getTypeStr() const override { return "Cube"; }
+
+	virtual double getSquare() const override;
+	virtual double getVolume() const override;
 };
