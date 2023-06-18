@@ -34,9 +34,9 @@ Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2,
 	}
 
 	// стороны фигуры
-	int a = abs(x1 - x2);
-	int b = abs(y1 - y2);
-	int c = abs(z1 - z2);
+	int a = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(y1 - y2, 2));
+	int b = sqrt(pow(x1 - x3, 2) + pow(y1 - y3, 2) + pow(y1 - y3, 2));
+	int c = sqrt(pow(x1 - x4, 2) + pow(y1 - y4, 2) + pow(y1 - y4, 2));
 	// считаем площадь фигуры
 	switch (type)
 	{
@@ -47,7 +47,7 @@ Shape::Shape(int _type, int _x1, int _y1, int _z1, int _x2, int _y2, int _z2,
 		square = a * b;
 		break;
 	case cube:
-		square = 2 * a * b + 2 * a * c + 2 * b * c;
+		square = 2 * (a * b + a * c + b * c);
 		break;
 	default:
 		break;
