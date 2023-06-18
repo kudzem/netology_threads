@@ -21,16 +21,6 @@ public:
 		return *this;
 	}
 
-	ThreeDPoint& operator=(const ThreeDPoint& other) {
-		_c = other._c;
-		return *this;
-	}
-
-	ThreeDPoint& operator*(double factor) {
-		std::for_each(_c.begin(), _c.end(), [factor](double& value) { value *= factor; });
-		return *this;
-	}
-
 	ThreeDPoint& scale(int dimention, double factor) {
 		_c[dimention] *= factor;
 		return *this;
