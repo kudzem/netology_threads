@@ -47,25 +47,30 @@ public:
 
 class Shape
 {
+public:
+	enum shape_type {
+		unknown = -1,
+		line,
+		sqr,
+		cube,
+		circle,
+		cylinder
+	};
+
 private:
-	int type;
+	shape_type type;
 
 public:
-	static const int line = 0;
-	static const int sqr = 1;
-	static const int cube = 2;
-	static const int circle = 3;
-	static const int cylinder = 4;
 
 	std::vector<ThreeDPoint> points;
 
 	Shape();
-	Shape(int type, ThreeDPoint p1, ThreeDPoint p2);
-	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3);
-	Shape(int type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
+	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2);
+	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3);
+	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
+	Shape(shape_type type, ThreeDPoint center);
 
-	Shape(int type, ThreeDPoint center);
-	int getType() const { return type; }
+	shape_type getType() const { return type; }
 	virtual std::string getTypeStr() const { return "Shape"; }
 
 	virtual
@@ -119,7 +124,7 @@ class RotationShape : public Shape {
 private:
 	double radius = 0;
 public:
-	RotationShape(int type, ThreeDPoint center, double radius) : Shape(type, center), radius(radius) {}
+	RotationShape(Shape::shape_type type, ThreeDPoint center, double radius) : Shape(type, center), radius(radius) {}
 
 	virtual Shape& scale(double factor) override {
 		Shape::scale(factor);
