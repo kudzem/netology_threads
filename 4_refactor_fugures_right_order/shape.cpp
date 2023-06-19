@@ -3,9 +3,9 @@
 #include<cmath>
 #include <iostream>
 
-Shape::Shape() : type(unknown) {}
+Shape::Shape(shape_type _type) : type(_type) {}
 
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2) : Shape()
+Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2) : Shape(_type)
 {
 	type = _type;
 
@@ -13,7 +13,7 @@ Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2) : Shape()
 	points.push_back(p2);
 }
 
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) : Shape()
+Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) : Shape(_type)
 {
 	type = _type;
 
@@ -22,7 +22,7 @@ Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) :
 	points.push_back(p3);
 }
 
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape()
+Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape(_type)
 {
 	type = _type;
 
@@ -32,7 +32,7 @@ Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, T
 	points.push_back(p4);
 }
 
-Shape::Shape(shape_type _type, ThreeDPoint center) : Shape()
+Shape::Shape(shape_type _type, ThreeDPoint center) : Shape(_type)
 {
 	type = _type;
 	points.push_back(center);

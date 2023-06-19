@@ -64,7 +64,7 @@ public:
 
 	std::vector<ThreeDPoint> points;
 
-	Shape();
+	Shape(shape_type _type);
 	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2);
 	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3);
 	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
