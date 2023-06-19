@@ -38,9 +38,9 @@ void check_main_cylinder_parameters_match(Cylinder* shape, int type, double volu
 
 int main() {
 
-	Shape* line = new Line({ 1, 1, 1 }, { 2, 2, 2 });
-	Shape* square = new Square({ 1, 1, 0 }, { 1, 0, 0 }, { 0, 1, 0 });
-	Shape* cube = new Cube( { 0, 0, 0 }, { 1, 0, 0 }, { 0, 0, 1 }, { 0, 1, 0 });
+	Shape* line = new Line({ 1, 1, 1 }, { { 2, 2, 2 } });
+	Shape* square = new Square({ 1, 1, 0 }, { { 1, 0, 0 }, { 0, 1, 0 } });
+	Shape* cube = new Cube({ 0, 0, 0 }, { { 1, 0, 0 }, { 0, 0, 1 }, { 0, 1, 0 } });
 
 	const double R = 2;
 	const double H = 5;

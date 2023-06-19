@@ -3,40 +3,21 @@
 #include<cmath>
 #include <iostream>
 
-Shape::Shape(shape_type _type) : type(_type) {}
+Shape::Shape(shape_type type,
+	         ThreeDPoint anchor_point) : _type(type),
+	                                     _anchor_point(anchor_point) { }
 
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2) : Shape(_type)
-{
-	type = _type;
+Shape::Shape(shape_type type, 
+	         ThreeDPoint anchor_point, 
+	         std::vector<ThreeDPoint>& addPoints) : _type(type), 
+	                                                _anchor_point(anchor_point), 
+	                                                _addPoints(addPoints) { }
 
-	points.push_back(p1);
-	points.push_back(p2);
-}
-
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) : Shape(_type)
-{
-	type = _type;
-
-	points.push_back(p1);
-	points.push_back(p2);
-	points.push_back(p3);
-}
-
-Shape::Shape(shape_type _type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape(_type)
-{
-	type = _type;
-
-	points.push_back(p1);
-	points.push_back(p2);
-	points.push_back(p3);
-	points.push_back(p4);
-}
-
-Shape::Shape(shape_type _type, ThreeDPoint center) : Shape(_type)
-{
-	type = _type;
-	points.push_back(center);
-}
+Shape::Shape(shape_type type,
+	         ThreeDPoint anchor_point,
+	         std::vector<ThreeDPoint>&& addPoints) : _type(type),
+	                                                 _anchor_point(anchor_point),
+	                                                 _addPoints(addPoints) { }
 
 double Cylinder::getVolume() const {
 	return M_PI * getRadius() * getRadius() * height;
@@ -52,25 +33,24 @@ double Circle::getSquare() const {
 
 double Cube::getVolume() const {
 	double a, b, c;
-	a = points[0].distance(points[1]);
-	b = points[0].distance(points[2]);
-	c = points[0].distance(points[3]);
+	a = _anchor_point.distance(_addPoints[0]);
+	b = _anchor_point.distance(_addPoints[1]);
+	c = _anchor_point.distance(_addPoints[2]);
 	//std::cout << "a=" << a << "b=" << b << "c=" << c << std::endl;
 	return a * b * c;
 }
 
 double Cube::getSquare() const {
 	double a, b, c;
-	a = points[0].distance(points[1]);
-	b = points[0].distance(points[2]);
-	c = points[0].distance(points[3]);
+	a = _anchor_point.distance(_addPoints[0]);
+	b = _anchor_point.distance(_addPoints[1]);
+	c = _anchor_point.distance(_addPoints[2]);
 	return  2 * (a * b + a * c + b * c);
 }
 
 double Square::getSquare() const {
-	double a, b, c;
-	// стороны фигуры
-	a = points[0].distance(points[1]);
-	b = points[0].distance(points[2]);
+	double a, b;
+	a = _anchor_point.distance(_addPoints[0]);
+	b = _anchor_point.distance(_addPoints[1]);
 	return a * b;
 }

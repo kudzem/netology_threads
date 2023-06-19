@@ -58,34 +58,36 @@ public:
 	};
 
 private:
-	shape_type type;
+	shape_type _type;
+
+protected:
+
+	std::vector<ThreeDPoint> _addPoints;
+	ThreeDPoint _anchor_point;
 
 public:
 
-	std::vector<ThreeDPoint> points;
+	Shape(shape_type type, ThreeDPoint anchor_point);
+	Shape(shape_type type, ThreeDPoint anchor_point, std::vector<ThreeDPoint>& addPoints);
+	Shape(shape_type type, ThreeDPoint anchor_point, std::vector<ThreeDPoint>&& addPoints);
 
-	Shape(shape_type _type);
-	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2);
-	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3);
-	Shape(shape_type type, ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4);
-	Shape(shape_type type, ThreeDPoint center);
-
-	shape_type getType() const { return type; }
+	shape_type getType() const { return _type; }
 	virtual std::string getTypeStr() const { return "Shape"; }
 
 	virtual
 	std::string to_string() {
 		std::string res;
 		res += "Type=" + getTypeStr() + "(" + std::to_string(getType()) + ")" + ":\n";
-
-		for (auto& p : points) {
+		res += "Anchor=" + _anchor_point.to_string() + "\n";
+		for (auto& p : _addPoints) {
 			res += p.to_string();
 		}
 		return res;
 	}
 
 	Shape& shift(const ThreeDPoint& value) {
-		for (auto& point : points) {
+		_anchor_point = _anchor_point + value;
+		for (auto& point : _addPoints) {
 			point = point + value;
 		}
 
@@ -93,7 +95,8 @@ public:
 	}
 
 	virtual Shape& scale(int dimention, double factor) {
-		for (auto& point : points) {
+		_anchor_point.scale(dimention, factor);
+		for (auto& point : _addPoints) {
 			point.scale(dimention, factor);
 		}
 
@@ -101,7 +104,8 @@ public:
 	}
 
 	virtual Shape& scale(double factor) {
-		for (auto& point : points) {
+		_anchor_point.scale(factor);
+		for (auto& point : _addPoints) {
 			point.scale(factor);
 		}
 
@@ -204,24 +208,26 @@ public:
 
 class Square : public HasSurface, public Shape {
 public:
-	Square(ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3) : Shape(Shape::sqr, p1, p2, p3), HasSurface() {}
+	Square(ThreeDPoint corner, std::vector<ThreeDPoint>& adjacentPoints) : Shape(Shape::sqr, corner, adjacentPoints), HasSurface() {}
+	Square(ThreeDPoint corner, std::vector<ThreeDPoint>&& adjacentPoints) : Shape(Shape::sqr, corner, adjacentPoints), HasSurface() {}
 
 	virtual std::string getTypeStr() const override { return "Square"; }
 
 	virtual double getSquare() const override;
 
 	std::string to_string() override {
-		std::string res = Shape::to_string();
+		std::string res = Shape::to_string() + "\n";
 		res += "square=" + std::to_string(getSquare()) + ":\n";
-		res += "a=" + std::to_string(points[0].distance(points[1])) +
-			   ",b=" + std::to_string(points[0].distance(points[2])) + ":\n";
+		res += "a=" + std::to_string(_anchor_point.distance(_addPoints[0])) +
+			   ",b=" + std::to_string(_anchor_point.distance(_addPoints[1])) + ":\n";
 		return res;
 	}
 };
 
 class Cube : public Shape, public HasVolume, public HasSurface {
 public:
-	Cube(ThreeDPoint p1, ThreeDPoint p2, ThreeDPoint p3, ThreeDPoint p4) : Shape(Shape::cube, p1, p2, p3, p4), HasVolume(), HasSurface() {}
+	Cube(ThreeDPoint corner, std::vector<ThreeDPoint>& adjacentPoints) : Shape(Shape::cube, corner, adjacentPoints), HasVolume(), HasSurface() {}
+	Cube(ThreeDPoint corner, std::vector<ThreeDPoint>&& adjacentPoints) : Shape(Shape::cube, corner, adjacentPoints), HasVolume(), HasSurface() {}
 
 	virtual std::string getTypeStr() const override { return "Cube"; }
 
@@ -229,12 +235,12 @@ public:
 	virtual double getVolume() const override;
 
 	std::string to_string() override {
-		std::string res = Shape::to_string();
+		std::string res = Shape::to_string() + "\n";
 		res += "square=" + std::to_string(getSquare()) + ":\n";
 		res += "volume=" + std::to_string(getVolume()) + ":\n";
-		res += "a=" + std::to_string(points[0].distance(points[1])) + 
-			   ",b=" + std::to_string(points[0].distance(points[2])) +
-			   ",c=" + std::to_string(points[0].distance(points[3])) + ":\n";
+		res += "a=" + std::to_string(_anchor_point.distance(_addPoints[0])) +
+			   ",b=" + std::to_string(_anchor_point.distance(_addPoints[1])) +
+			   ",c=" + std::to_string(_anchor_point.distance(_addPoints[2])) + ":\n";
 		return res;
 	}
 
@@ -242,13 +248,14 @@ public:
 
 class Line : public Shape {
 public:
-	Line(ThreeDPoint p1, ThreeDPoint p2) : Shape(Shape::line, p1, p2) {}
+	Line(ThreeDPoint begin, std::vector<ThreeDPoint>& adjacentPoints) : Shape(Shape::line, begin, adjacentPoints) {}
+	Line(ThreeDPoint begin, std::vector<ThreeDPoint>&& adjacentPoints) : Shape(Shape::line, begin, adjacentPoints) {}
 
 	virtual std::string getTypeStr() const override { return "Line"; }
 
 	std::string to_string() override {
-		std::string res = Shape::to_string();
-		res += "a=" + std::to_string(points[0].distance(points[1])) + ":\n";
+		std::string res = Shape::to_string() + "\n";
+		res += "a=" + std::to_string(_anchor_point.distance(_addPoints[0])) + ":\n";
 		return res;
 	}
 
