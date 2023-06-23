@@ -15,7 +15,7 @@ void test2() {
 
 int main()
 {
-    thread_pool<std::function<void()>> workers(3);
+    thread_pool<std::function<void()>> workers;
 
     for (int i = 0; i < 10; ++i) {
         workers.submit(test1);

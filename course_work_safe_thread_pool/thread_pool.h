@@ -28,16 +28,24 @@ class thread_pool {
     std::mutex mx;
 
 public:
+
+    thread_pool() : thread_pool(std::thread::hardware_concurrency()) {}
     thread_pool(unsigned pool_size) {
+
         for (unsigned i = 0; i < pool_size; ++i)
         {
             this->threads.emplace_back(std::thread(std::bind(&thread_pool::work, this)));
         }
+    }
 
-        for (auto& t : threads) {
-            t.detach();
+    virtual ~thread_pool()
+    {
+        stop();
+        for (auto& t : this->threads) {
+            t.join();
         }
     }
+
 
     bool isStopped() { return stopFlag; }
 
@@ -52,10 +60,13 @@ public:
             std::unique_lock lk(mx);
             cv.wait(lk, [this] () { return !this->work_todo.empty() || this->isStopped(); });
             
-            auto work_item = work_todo.pop();
+            if (this->isStopped()) break;
+
+            auto work_item = work_todo.front();
+            work_todo.pop();
+
             std::cout << "Work is taken by " << std::this_thread::get_id() << ": ";
             work_item();
-            //std::this_thread::sleep_for(200ms);
         }
     }
     

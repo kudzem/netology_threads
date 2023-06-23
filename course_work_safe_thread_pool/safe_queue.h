@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <queue>
+#include <optional>
 
 //2. Шаблонный класс safe_queue, представляющий собой реализацию очереди, безопасной относительно одновременного доступа из нескольких потоков.
 //Минимально требуемые поля класса safe_queue :
@@ -30,11 +31,15 @@ public:
         return;
     }
 
-    T pop() {
+    void pop() {
         std::lock_guard<std::mutex> lk(mx);
-        auto f = q.front();
+        if (q.empty()) return;
         q.pop();
-        return f;
+    }
+
+    T front() {
+        std::lock_guard<std::mutex> lk(mx);
+        return q.front();
     }
 
     bool empty() {
