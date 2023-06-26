@@ -17,12 +17,14 @@ int mult(int a, int b=0) {
     return res;
 }
 
-void do_nothing(void) {
+int do_nothing(void) {
     std::cout << "I do nothing" << std::endl;
+    return 0;
 }
 
-void print_number(int a) {
+int print_number(int a) {
     std::cout << "Number:" << a << std::endl;
+    return 0;
 }
 
 int main()
@@ -30,15 +32,19 @@ int main()
     thread_pool<int, int, int> workers;
  
     for (int i = 0; i < 10; ++i) {
-        workers.submit(sum, i, 10);
-        workers.submit(mult, i, 10);
+        auto res = workers.submit(sum, i, 10);
+        auto res2 = workers.submit(mult, i, 10);
 
+        int v1 = res.get();
+        int v2 = res2.get();
+        std::cout << "Got value" << v1 << std::endl;
+        std::cout << "Got value" << v2 << std::endl;
         std::this_thread::sleep_for(10ms);
     }
 
     workers.stop();
 
-    thread_pool<void, int> workers2;
+    thread_pool<int, int> workers2;
 
     for (int i = 0; i < 10; ++i) {
         workers2.submit(print_number, i);
@@ -51,10 +57,12 @@ int main()
 
     workers.stop();
 
-    thread_pool<void> workers3;
+    thread_pool<int> workers3;
 
     for (int i = 0; i < 10; ++i) {
-        workers3.submit(do_nothing);
+        auto res = workers3.submit(do_nothing);
+
+        res.get();
 
         std::this_thread::sleep_for(10ms);
     }
