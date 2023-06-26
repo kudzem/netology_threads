@@ -19,10 +19,12 @@
 //Остальные методы на усмотрение разработчика.
 
 // F = std::function<void()>
-template <class F>
+template <class F, typename ... Args>
 class thread_pool {
     std::vector<std::thread> threads;
-    safe_queue<F> work_todo;
+
+
+    safe_queue<std::pair<F, std::tuple<Args...>>> work_todo;
     bool stopFlag = false;
     std::condition_variable cv;
     std::mutex mx;
@@ -62,19 +64,20 @@ public:
             
             if (this->isStopped()) break;
 
-            auto work_item = work_todo.front();
+            auto [work_func, work_args] = work_todo.front();
             work_todo.pop();
 
             std::cout << "Work is taken by " << std::this_thread::get_id() << ": ";
-            work_item();
+            std::apply(work_func, work_args);
         }
     }
     
-    void submit(F f) {
+    void submit(F f, Args... args) {
         std::unique_lock lk(mx);
-        work_todo.push(f);
+        work_todo.push(std::make_pair(f,std::tuple(args...)));
         cv.notify_one();
         return;
     }
 };
+
 
