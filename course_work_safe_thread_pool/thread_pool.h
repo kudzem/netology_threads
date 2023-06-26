@@ -19,12 +19,11 @@
 //Остальные методы на усмотрение разработчика.
 
 // F = std::function<void()>
-template <class F, typename ... Args>
+template <class R, typename ... Args>
 class thread_pool {
     std::vector<std::thread> threads;
 
-
-    safe_queue<std::pair<F, std::tuple<Args...>>> work_todo;
+    safe_queue<std::pair<std::function<R(Args...)>, std::tuple<Args...>>> work_todo;
     bool stopFlag = false;
     std::condition_variable cv;
     std::mutex mx;
@@ -72,7 +71,7 @@ public:
         }
     }
     
-    void submit(F f, Args... args) {
+    void submit(std::function<R(Args...)> f, Args... args) {
         std::unique_lock lk(mx);
         work_todo.push(std::make_pair(f,std::tuple(args...)));
         cv.notify_one();

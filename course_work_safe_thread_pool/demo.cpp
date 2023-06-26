@@ -27,8 +27,8 @@ void print_number(int a) {
 
 int main()
 {
-    thread_pool<std::function<int(int,int)>, int, int> workers;
-
+    thread_pool<int, int, int> workers;
+ 
     for (int i = 0; i < 10; ++i) {
         workers.submit(sum, i, 10);
         workers.submit(mult, i, 10);
@@ -38,7 +38,7 @@ int main()
 
     workers.stop();
 
-    thread_pool<std::function<void(int)>, int> workers2;
+    thread_pool<void, int> workers2;
 
     for (int i = 0; i < 10; ++i) {
         workers2.submit(print_number, i);
@@ -51,7 +51,7 @@ int main()
 
     workers.stop();
 
-    thread_pool<std::function<void(void)>> workers3;
+    thread_pool<void> workers3;
 
     for (int i = 0; i < 10; ++i) {
         workers3.submit(do_nothing);
